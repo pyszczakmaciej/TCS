@@ -22,7 +22,7 @@ export interface LoginResponse {
 const apiUrl = "http://localhost:8080";
 
 const getCurrentUser = (): string => {
-  return localStorage.getItem("user") || "";
+  return sessionStorage.getItem("at") || "";
 };
 
 const login = async (data: LoginPayload): Promise<void> => {
@@ -31,40 +31,30 @@ const login = async (data: LoginPayload): Promise<void> => {
       LoginPayload,
       AxiosResponse<LoginResponse, LoginPayload>,
       LoginPayload
-    >(`${apiUrl}/auth/authenticate`, {
-      username: data.username,
-      password: data.password,
-    })
+    >(`${apiUrl}/auth/authenticate`, data)
     .then((res) => {
-      console.log(jwtDecode(res.data.token));
-      localStorage.setItem("user", res.data.token);
+      console.log("token data", jwtDecode(res.data.token));
+      sessionStorage.setItem("at", res.data.token);
     })
     .catch((err) => alert("Nie udało się zalogować." + err));
 };
 
-const register = async (): Promise<void> => {
+const register = async (data: RegisterPayload): Promise<void> => {
   await axios
     .post<
       RegisterPayload,
       AxiosResponse<LoginResponse, RegisterPayload>,
       RegisterPayload
-    >(`${apiUrl}/auth/register`, {
-      username: "test123",
-      password: "test123",
-      email: "test123@test.com",
-      firstName: "Testowy",
-      lastName: "User",
-      role: "USER",
-    })
+    >(`${apiUrl}/auth/register`, data)
     .then((res) => {
-      console.log(jwtDecode(res.data.token));
-      localStorage.setItem("user", res.data.token);
+      console.log("token data", jwtDecode(res.data.token));
+      sessionStorage.setItem("at", res.data.token);
     })
     .catch((err) => alert("Nie udało się zalogować." + err));
 };
 
 const logout = (): void => {
-  localStorage.removeItem("user");
+  sessionStorage.removeItem("at");
 };
 
 const AuthService = {
