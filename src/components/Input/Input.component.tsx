@@ -24,10 +24,12 @@ function Input(
   const [error, setError] = useState<string | null>(null);
 
   const checkValidity = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    const validity = e.target.validity;
+    const validity: ValidityState = e.target.validity;
 
     if (validity.valueMissing) {
       setError(inputErrorMessageMap["valueMissing"]);
+    } else {
+      setError(null);
     }
   };
 
