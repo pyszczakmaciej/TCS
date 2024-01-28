@@ -1,0 +1,12 @@
+@media (max-width: 320px) {
+  .dialog-answers {
+    padding: 1rem 1rem !important;
+    align-items: center;
+  }
+
+  .dialog-answers__answer {
+    flex-direction: column;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-secondary);
+  }
+}

@@ -1,0 +1,53 @@
+.test-questions {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.test-questions__header {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  height: 5rem;
+  display: flex;
+  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.test-questions__header--title {
+  font-size: 1.5rem;
+}
+
+.btn {
+  padding: 1rem;
+  font-weight: bold;
+  color: var(--color-dark);
+  background-color: var(--color-success);
+  border: none;
+}
+
+.test-questions__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+  overflow-y: auto;
+}
+
+.test-questions__list {
+  width: 100%;
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+@media (min-width: 1024px) {
+  .test-questions__header--title {
+    font-size: 2rem;
+  }
+}

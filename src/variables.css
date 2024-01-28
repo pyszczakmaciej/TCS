@@ -8,4 +8,7 @@
   --color-success: #1fd6a5;
   --color-warning: #ffb703;
   --color-error: #b80025;
+
+  /* measurements */
+  --header-mobile-height: 4rem;
 }

@@ -11,7 +11,15 @@
     "server": "json-server mock-db.json -m ./node_modules/json-server-auth"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.6",
+    "@mui/material": "^5.15.6",
+    "@preact/signals-react": "^2.0.0",
     "axios": "^1.6.5",
+    "date-fns": "^3.3.1",
+    "framer-motion": "^11.0.3",
+    "hamburger-react": "^2.5.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,6 +37,6 @@
     "json-server-auth": "^1.2.1",
     "prettier": "^3.2.4",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^5.0.12"
   }
 }

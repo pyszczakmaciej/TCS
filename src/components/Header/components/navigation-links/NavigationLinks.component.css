@@ -1,0 +1,22 @@
+.link {
+  width: 85%;
+  padding: 1rem;
+  background-color: var(--color-secondary);
+  color: var(--color-light);
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+}
+
+.link--active {
+  width: 85%;
+  padding: 1rem;
+  background-color: var(--color-success);
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+}

@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import AuthService from "../../../../backend/auth/Auth.service";
+import { RegisterPayload } from "../../../../backend/auth/models/register-payload.interface";
 import Input from "../../../../components/Input/Input.component";
-import AuthService, {
-  RegisterPayload,
-} from "../../../../services/Auth.service";
 
 function RegisterForm(props: {
   setIsLoginView: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,11 +13,9 @@ function RegisterForm(props: {
       email: "",
       firstName: "",
       lastName: "",
-      role: "USER",
+      role: "ADMIN",
     }
   );
-
-  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRegisterFormValues({
@@ -34,7 +30,7 @@ function RegisterForm(props: {
     console.log(registerFormValues);
     AuthService.register(registerFormValues).then((res) => {
       console.log(res);
-      navigate("/");
+      window.location.reload();
     });
   };
 

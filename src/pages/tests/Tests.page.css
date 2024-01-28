@@ -1,0 +1,24 @@
+.tests-page__header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--color-dark);
+}
+
+.tests-page__header-content {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .tests-page__header-content {
+    width: 50%;
+  }
+}

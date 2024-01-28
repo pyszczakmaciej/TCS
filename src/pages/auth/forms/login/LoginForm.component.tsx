@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import AuthService from "../../../../backend/auth/Auth.service";
+import { LoginPayload } from "../../../../backend/auth/models/login-payload.interface";
 import Input from "../../../../components/Input/Input.component";
-import AuthService, { LoginPayload } from "../../../../services/Auth.service";
 
 function LoginForm(props: {
   setIsLoginView: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,8 +10,6 @@ function LoginForm(props: {
     username: "",
     password: "",
   });
-
-  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginFormValues({
@@ -25,7 +23,7 @@ function LoginForm(props: {
     e.preventDefault();
     console.log(loginFormValues);
     AuthService.login(loginFormValues).then(() => {
-      navigate("/");
+      window.location.reload();
     });
   };
 
