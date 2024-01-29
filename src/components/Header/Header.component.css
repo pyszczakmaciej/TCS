@@ -23,6 +23,13 @@
   justify-content: space-between;
 }
 
+.header-desktop__logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (min-width: 1024px) {
   .header-mobile {
     display: none;
@@ -30,11 +37,10 @@
 
   .header-desktop {
     display: flex;
-    width: auto;
   }
 
   .header {
-    width: 30%;
+    width: 20%;
     height: 100%;
   }
 }

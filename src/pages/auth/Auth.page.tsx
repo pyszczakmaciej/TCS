@@ -22,7 +22,7 @@ function AuthPage() {
 
   return (
     <>
-      <div className="wrapper">
+      <div className="auth-wrapper">
         {isLoginView ? (
           <LoginForm setIsLoginView={setIsLoginView} />
         ) : (

@@ -13,12 +13,10 @@
   width: 100%;
   display: flex;
   gap: 1rem;
-  flex-direction: column;
-  justify-content: center;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 768px) {
   .tests-page__header-content {
-    width: 50%;
+    flex-direction: column;
   }
 }

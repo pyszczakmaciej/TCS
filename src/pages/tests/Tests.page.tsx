@@ -1,4 +1,4 @@
-import { Button, List, TextField } from "@mui/material";
+import { Button, List, TextField, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TestsService from "../../backend/tests/Tests.service";
@@ -33,6 +33,7 @@ export function TestsPage(props: ITestsPageProps) {
   const [tests, setTests] = useState<TestView[]>([]);
 
   const navigate = useNavigate();
+  const matches = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     TestsService.fetchTests().then((res) => {
@@ -58,7 +59,7 @@ export function TestsPage(props: ITestsPageProps) {
           <TextField
             label="Nazwa testu"
             variant="filled"
-            sx={textFieldSx}
+            sx={{ width: matches ? "100%" : "70%", ...textFieldSx }}
             placeholder="Nazwa testu"
             onChange={(e) => setTestName(e.target.value)}
             required
@@ -66,6 +67,7 @@ export function TestsPage(props: ITestsPageProps) {
 
           <Button
             sx={{
+              width: matches ? "100%" : "30%",
               background: "var(--color-success)",
               color: "var(--color-secondary)",
             }}

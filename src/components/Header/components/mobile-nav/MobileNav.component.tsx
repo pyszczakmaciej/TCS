@@ -1,9 +1,13 @@
+import { Button } from "@mui/material";
 import { motion } from "framer-motion";
+import AuthService from "../../../../backend/auth/Auth.service";
 import { NavigationLinks } from "../navigation-links/NavigationLinks.component";
 import "./MobileNav.component.css";
 export interface IMobileNavProps {}
 
 export function MobileNav() {
+  const logout = AuthService.logout;
+
   return (
     <motion.nav
       initial={{ opacity: 0, translateX: "-100%", display: "none" }}
@@ -13,7 +17,9 @@ export function MobileNav() {
       className="hamburger-nav"
     >
       <NavigationLinks />
-      <button className="hamburger-logout">Logout</button>
+      <Button onClick={logout} sx={{ color: "var(--color-white)" }}>
+        Wyloguj
+      </Button>
     </motion.nav>
   );
 }

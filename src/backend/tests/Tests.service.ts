@@ -29,6 +29,16 @@ const createTest = async (
     });
 };
 
+const activateTest = async (testUuid: string) => {
+  return await axios
+    .put(`${apiUrl}/${testUuid}/activate`)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
+
 const fetchQuestions = async (testUuid: string) => {
   return await axios
     .get(`${apiUrl}/${testUuid}/questions`)
@@ -46,14 +56,33 @@ const createQuestion = async (testUuid: string, data: QuestionPayload) => {
     })
     .catch((err) => {
       console.log(err);
+      return err;
+    });
+};
+
+const updateQuestion = async (
+  testUuid: string,
+  questionUuid: string,
+  data: QuestionPayload
+) => {
+  return axios
+    .put(`${apiUrl}/${testUuid}/questions/${questionUuid}`, data)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
     });
 };
 
 const TestsService = {
   fetchTests,
   createTest,
+  activateTest,
   fetchQuestions,
   createQuestion,
+  updateQuestion,
 };
 
 export default TestsService;

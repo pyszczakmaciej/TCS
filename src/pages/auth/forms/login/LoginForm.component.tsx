@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useState } from "react";
 import AuthService from "../../../../backend/auth/Auth.service";
 import { LoginPayload } from "../../../../backend/auth/models/login-payload.interface";
@@ -47,10 +48,15 @@ function LoginForm(props: {
           required
         />
       </div>
-      <button className="button" type="submit">
+      <Button variant="contained" type="submit">
         Zaloguj
-      </button>
-      <span onClick={() => props.setIsLoginView(false)}>Zarejestruj się</span>
+      </Button>
+      <Button
+        sx={{ color: "var(--color-white)" }}
+        onClick={() => props.setIsLoginView(false)}
+      >
+        Zarejestruj się
+      </Button>
     </form>
   );
 }

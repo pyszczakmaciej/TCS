@@ -134,16 +134,24 @@ export function QuestionDialog(props: IQuestionDialogProps) {
     setAnswers([]);
   };
 
-  const createQuestion = async () => {
+  const save = async () => {
     if (!answers.length) return;
 
-    TestsService.createQuestion(testUuid, {
-      correctAnswer,
-      possibleAnswers: answers,
-      question: formValues.question,
-    }).then(() => {
-      handleClose(true);
-    });
+    question
+      ? TestsService.updateQuestion(testUuid, question.uuid, {
+          correctAnswer,
+          possibleAnswers: answers,
+          question: formValues.question,
+        }).then(() => {
+          handleClose(true);
+        })
+      : TestsService.createQuestion(testUuid, {
+          correctAnswer,
+          possibleAnswers: answers,
+          question: formValues.question,
+        }).then(() => {
+          handleClose(true);
+        });
   };
 
   return (
@@ -169,7 +177,7 @@ export function QuestionDialog(props: IQuestionDialogProps) {
                 ? `Edycja pytania: ${formValues.question}`
                 : "Tworzenie pytania"}{" "}
             </Typography>
-            <Button autoFocus color="inherit" onClick={createQuestion}>
+            <Button autoFocus color="inherit" onClick={save}>
               Zapisz
             </Button>
           </Toolbar>
