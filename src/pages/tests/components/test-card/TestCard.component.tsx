@@ -18,39 +18,10 @@ export interface ITestCardProps {
   test: TestView;
 }
 
-const deleteButtonSx: SxProps<Theme> = {
-  color: "var(--color-error)",
-  borderColor: "var(--color-error)",
-  ":hover": {
-    color: "var(--color-white)",
-    borderColor: "var(--color-error)",
-    background: "var(--color-error)",
-  },
-};
-
-const activateButtonSx: SxProps<Theme> = {
-  color: "var(--color-success)",
-  background: "var(--color-secondary)",
-  ":hover": {
-    color: "var(--color-secondary)",
-    borderColor: "var(--color-error)",
-    background: "var(--color-success)",
-  },
-};
-
-const editButtonSx: SxProps<Theme> = {
-  color: "var(--color-secondary)",
-  background: "var(--color-primary)",
-  ":hover": {
-    color: "var(--color-primary)",
-    borderColor: "var(--color-error)",
-    background: "var(--color-secondary)",
-  },
-  ":disabled": {
-    color: "var(--color-dark)",
-    background: "var(--color-light)",
-    opacity: "0.4",
-  },
+const buttonSizeSx: SxProps<Theme> = {
+  padding: "1rem 1.5rem",
+  fontSize: "1rem",
+  fontWeight: "700",
 };
 
 export function TestCard(props: ITestCardProps) {
@@ -67,7 +38,8 @@ export function TestCard(props: ITestCardProps) {
       sx={{
         minWidth: 275,
         background: "var(--color-dark)",
-        color: "var(--color-ligt)",
+        color: "var(--color-darkWhite)",
+        borderBottom: "2px solid var(--color-primary)",
       }}
     >
       <CardContent sx={{ padding: "1rem" }}>
@@ -98,9 +70,22 @@ export function TestCard(props: ITestCardProps) {
             <Tooltip title="Nie można edytować udostępnionego testu.">
               <span>
                 <Button
-                  sx={editButtonSx}
+                  sx={{
+                    color: "var(--color-white)",
+                    background: "var(--color-blue)",
+                    ":hover": {
+                      color: "var(--color-white)",
+                      borderColor: "var(--color-blue)",
+                      background: "var(--color-blue)",
+                    },
+                    ":disabled": {
+                      color: "var(--color-primary)",
+                      background: "var(--color-secondary)",
+                      opacity: "0.4",
+                    },
+                    ...buttonSizeSx,
+                  }}
                   variant="contained"
-                  size="small"
                   disabled={test.active}
                 >
                   Edytuj
@@ -111,9 +96,22 @@ export function TestCard(props: ITestCardProps) {
             <Button
               hidden={test.active}
               onClick={() => navigate(`${test.uuid}`)}
-              sx={editButtonSx}
+              sx={{
+                color: "var(--color-white)",
+                background: "var(--color-blue)",
+                ":hover": {
+                  color: "var(--color-white)",
+                  borderColor: "var(--color-blue)",
+                  background: "var(--color-blue)",
+                },
+                ":disabled": {
+                  color: "var(--color-primary)",
+                  background: "var(--color-secondary)",
+                  opacity: "0.4",
+                },
+                ...buttonSizeSx,
+              }}
               variant="contained"
-              size="small"
             >
               Edytuj
             </Button>
@@ -121,14 +119,34 @@ export function TestCard(props: ITestCardProps) {
           {!test.active ? (
             <Button
               onClick={() => activateTest(test.uuid)}
-              sx={activateButtonSx}
+              sx={{
+                color: "var(--color-white)",
+                background: "var(--color-success)",
+                ":hover": {
+                  color: "var(--color-white)",
+                  borderColor: "var(--color-success)",
+                  background: "var(--color-success)",
+                },
+                ...buttonSizeSx,
+              }}
               variant="contained"
-              size="small"
             >
               Udostępnij
             </Button>
           ) : null}
-          <Button sx={deleteButtonSx} variant="outlined" size="small">
+          <Button
+            sx={{
+              color: "var(--color-white)",
+              borderColor: "var(--color-error)",
+              background: "var(--color-error)",
+              ":hover": {
+                color: "var(--color-white)",
+                background: "var(--color-error)",
+              },
+              ...buttonSizeSx,
+            }}
+            variant="contained"
+          >
             Usuń
           </Button>
         </div>
@@ -138,7 +156,6 @@ export function TestCard(props: ITestCardProps) {
             width: "100%",
             padding: "0.5rem",
             textAlign: matches ? "right" : "center",
-            // textAlign: "right",
 
             color: test.active
               ? "var(--color-success)"

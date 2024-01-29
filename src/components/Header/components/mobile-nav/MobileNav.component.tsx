@@ -17,7 +17,7 @@ export function MobileNav() {
       className="hamburger-nav"
     >
       <NavigationLinks />
-      <Button onClick={logout} sx={{ color: "var(--color-white)" }}>
+      <Button onClick={logout} sx={{ color: "var(--color-primary)" }}>
         Wyloguj
       </Button>
     </motion.nav>

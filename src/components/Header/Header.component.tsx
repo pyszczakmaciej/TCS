@@ -1,7 +1,7 @@
 import Hamburger from "hamburger-react";
 import { useState } from "react";
 
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import AuthService from "../../backend/auth/Auth.service";
 import "./Header.component.css";
 import { DesktopNav } from "./components/desktop-nav/DesktopNav.component";
@@ -19,19 +19,40 @@ export function Header(props: HeaderProps) {
     <header className="header" {...props}>
       <div className="header-mobile">
         <Hamburger toggled={hamburgerState} toggle={setHamburgerState} />
-        <span>{props.username}</span>
+        <Typography
+          sx={{
+            fontSize: "2rem",
+            fontWeight: "700",
+            color: "var(--color-success)",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          Test Craft Studio
+        </Typography>{" "}
       </div>
       {hamburgerState ? <MobileNav /> : null}
       <div className="header-desktop">
         <div className="profile">
-          <span>{props.username}</span>
+          <Typography
+            sx={{
+              fontSize: "2rem",
+              fontWeight: "700",
+              color: "var(--color-success)",
+            }}
+          >
+            Test Craft Studio
+          </Typography>
+          <Typography sx={{ fontSize: "14px", color: "var(--color-primary)" }}>
+            Zalogowano jako: {props.username}
+          </Typography>
         </div>
         <DesktopNav />
         <div className="header-desktop__logout-button">
           <Button
             onClick={logout}
             size="small"
-            sx={{ width: "50%", color: "var(--color-white)" }}
+            sx={{ width: "50%", color: "var(--color-primary)" }}
           >
             Wyloguj
           </Button>

@@ -5,13 +5,13 @@
 
 .header-mobile {
   width: 100%;
-  height: var(--header-mobile-height);
+  height: var(--header-height);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   padding: 0 1rem;
 
-  background-color: var(--color-dark) S;
+  background-color: var(--color-dark);
 }
 
 .header-desktop {
@@ -21,6 +21,13 @@
   padding: 1rem;
   flex-direction: column;
   justify-content: space-between;
+  background-color: var(--color-dark);
+  border-right: 2px solid var(--color-primary);
+}
+
+.header-desktop .profile {
+  height: var(--header-height);
+  border-bottom: 1px solid var(--color-primary);
 }
 
 .header-desktop__logout-button {

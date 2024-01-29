@@ -68,8 +68,12 @@ export function TestsPage(props: ITestsPageProps) {
           <Button
             sx={{
               width: matches ? "100%" : "30%",
-              background: "var(--color-success)",
-              color: "var(--color-secondary)",
+              background: "var(--color-blue)",
+              color: "var(--color-white)",
+              ":hover": {
+                background: "var(--color-blue)",
+                color: "var(--color-white)",
+              },
             }}
             variant="contained"
             size="large"
