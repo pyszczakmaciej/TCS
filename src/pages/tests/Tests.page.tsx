@@ -51,7 +51,12 @@ export function TestsPage(props: ITestsPageProps) {
 
   return (
     <div
-      style={{ width: "100%", height: "100%", overflowY: "auto" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        overflowY: "auto",
+        background: "var(--color-dark)",
+      }}
       {...props}
     >
       <div className="tests-page__header">

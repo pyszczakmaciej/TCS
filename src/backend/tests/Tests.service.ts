@@ -4,9 +4,35 @@ import { QuestionPayload } from "./models/question-payload.interface";
 
 const apiUrl = `${AppState.getValue("apiUrl")}/tests`;
 
+interface ErrorResponse {
+  response: {
+    data: string;
+  };
+}
+
+const alertError = (message: string): void => {
+  alert(`Serwer zwrócił błąd: ${message}`);
+};
+
+const successMessage = (message: string): void => {
+  alert(`Brawo: ${message}`);
+};
+
 const fetchTests = async () => {
   return await axios
     .get(`${apiUrl}`)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const fetchTest = async (testUuid: string) => {
+  return await axios
+    .get(`${apiUrl}/${testUuid}`)
     .then((res) => {
       console.log(res);
       return res.data;
@@ -24,8 +50,8 @@ const createTest = async (
     .then((res) => {
       return res.data;
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((err: ErrorResponse) => {
+      alertError(err.response.data);
     });
 };
 
@@ -33,10 +59,13 @@ const activateTest = async (testUuid: string) => {
   return await axios
     .put(`${apiUrl}/${testUuid}/activate`)
     .then((res) => {
-      console.log(res);
+      successMessage("Test został aktywowany!");
+      window.location.reload();
       return res.data;
     })
-    .catch((err) => console.log(err));
+    .catch((err: ErrorResponse) => {
+      alertError(err.response.data);
+    });
 };
 
 const fetchQuestions = async (testUuid: string) => {
@@ -45,7 +74,7 @@ const fetchQuestions = async (testUuid: string) => {
     .then((res) => {
       return res.data;
     })
-    .catch((err) => console.log(err));
+    .catch((err: ErrorResponse) => alertError(err.response.data));
 };
 
 const createQuestion = async (testUuid: string, data: QuestionPayload) => {
@@ -76,13 +105,27 @@ const updateQuestion = async (
     });
 };
 
+const deleteQuestion = async (testUuid: string, questionUuid: string) => {
+  return axios
+    .delete(`${apiUrl}/${testUuid}/questions/${questionUuid}`)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
+
 const TestsService = {
   fetchTests,
+  fetchTest,
   createTest,
   activateTest,
   fetchQuestions,
   createQuestion,
   updateQuestion,
+  deleteQuestion,
 };
 
 export default TestsService;

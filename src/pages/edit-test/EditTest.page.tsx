@@ -1,9 +1,10 @@
 import { ArrowBackIos } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Button, IconButton, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TestsService from "../../backend/tests/Tests.service";
 import { QuestionResponse } from "../../backend/tests/models/question-response.interface";
+import { TestView } from "../../backend/tests/models/test-view.interface";
 import AppState from "../../store/App.state";
 import "./EditTest.page.css";
 import { QuestionCard } from "./components/question-card/QuestionCard.component";
@@ -12,6 +13,7 @@ export interface IEditTestPageProps {}
 
 export function EditTestPage(props: IEditTestPageProps) {
   const [questions, setQuestions] = useState<QuestionResponse[]>([]);
+  const [testDetails, setTestDetails] = useState<TestView | null>(null);
   const [open, setOpen] = useState(false);
   const [shouldReload, setShouldReload] = useState(false);
 
@@ -30,13 +32,22 @@ export function EditTestPage(props: IEditTestPageProps) {
   };
 
   useEffect(() => {
-    params.testId || (params.testId && shouldReload)
-      ? TestsService.fetchQuestions(params.testId).then((res) => {
+    if (params.testId && !testDetails) {
+      TestsService.fetchTest(params.testId).then((res) => {
+        setTestDetails(res);
+
+        TestsService.fetchQuestions(res.uuid).then((res) => {
           setQuestions(res);
           setShouldReload(false);
-        })
-      : null;
-  }, [params.testId, shouldReload]);
+        });
+      });
+    } else if (params.testId || (params.testId && shouldReload)) {
+      TestsService.fetchQuestions(params.testId).then((res) => {
+        setQuestions(res);
+        setShouldReload(false);
+      });
+    }
+  }, [params.testId, shouldReload, testDetails]);
 
   return (
     <div className="test-questions" {...props}>
@@ -44,15 +55,40 @@ export function EditTestPage(props: IEditTestPageProps) {
         <IconButton onClick={() => navigate("..")} sx={{ color: "white" }}>
           <ArrowBackIos />
         </IconButton>
-        <p className="test-questions__header--title">Edycja testu</p>
-        <button className="btn" onClick={() => handleClickOpen()}>
+        <Typography>
+          Edytujesz: <b>{testDetails?.name}</b>
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            padding: "1rem 2rem",
+            background: "var(--color-blue)",
+            color: "var(--color-white)",
+            ":hover": {
+              background: "var(--color-blue)",
+              color: "var(--color-white)",
+            },
+          }}
+          onClick={() => handleClickOpen()}
+        >
           Dodaj pytanie
-        </button>
+        </Button>
       </div>
 
-      <div className="test-questions__content">
-        <h3>Lista pytań</h3>
-        <div className="test-questions__list">
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        <List
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1rem",
+          }}
+        >
           {questions.map((item) => {
             return (
               <QuestionCard
@@ -62,7 +98,7 @@ export function EditTestPage(props: IEditTestPageProps) {
               />
             );
           })}
-        </div>
+        </List>
       </div>
       <QuestionDialog
         testUuid={params.testId || ""}

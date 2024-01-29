@@ -5,8 +5,8 @@ import {
   Button,
   FormControlLabel,
   IconButton,
-  Input,
   Radio,
+  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -24,6 +24,27 @@ export interface IQuestionDialogProps {
   onClose: (reload: boolean) => void;
   testUuid: string;
 }
+
+const textFieldSx = {
+  "& .MuiFilledInput-root": {
+    overflow: "hidden",
+    borderRadius: 0,
+    backgroundColor: "var(--color-white)",
+    border: "1px solid",
+    borderColor: "var(--color-secondary)",
+    color: "var(--color-dark)",
+
+    "&:hover": {
+      backgroundColor: "var(--color-white)",
+      color: "var(--color-dark)",
+    },
+    "&.Mui-focused": {
+      backgroundColor: "var(--color-white)",
+
+      borderColor: "var(--color-primary)",
+    },
+  },
+};
 
 const lettersMap: Record<number, AnswerLetter> = {
   0: "A",
@@ -163,21 +184,36 @@ export function QuestionDialog(props: IQuestionDialogProps) {
             background: "var(--color-dark)",
           }}
         >
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              color: "var(--color-white)",
+            }}
+          >
             <IconButton
               edge="start"
-              color="inherit"
               onClick={() => handleClose(false)}
               aria-label="close"
             >
-              <CloseIcon />
+              <CloseIcon sx={{ color: "var(--color-white)" }} />
             </IconButton>
             <Typography>
               {question
                 ? `Edycja pytania: ${formValues.question}`
                 : "Tworzenie pytania"}{" "}
             </Typography>
-            <Button autoFocus color="inherit" onClick={save}>
+            <Button
+              autoFocus
+              variant="contained"
+              sx={{
+                minWidth: 120,
+                padding: "0.5rem",
+                background: "var(--color-blue)",
+                ":hover": { background: "var(--color-success)" },
+              }}
+              onClick={save}
+            >
               Zapisz
             </Button>
           </Toolbar>
@@ -186,19 +222,22 @@ export function QuestionDialog(props: IQuestionDialogProps) {
         <div
           style={{
             width: "100%",
+            height: "100%",
             padding: "2rem 3rem",
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
+            background: "var(--color-dark)",
           }}
           className="dialog-answers"
         >
-          <Input
+          <TextField
             onChange={(e) => handleInputChange(e)}
             name="question"
-            type="text"
+            label="Treść pytania"
             value={formValues.question}
-            placeholder="Treść pytania"
+            variant="filled"
+            sx={textFieldSx}
           />
           {answers.map((item, index) => {
             return (
@@ -209,11 +248,15 @@ export function QuestionDialog(props: IQuestionDialogProps) {
                   width: "90%",
                   alignItems: "center",
                   gap: "1rem",
+                  color: "var(--color-white)",
                 }}
                 className="dialog-answers__answer"
               >
                 <Typography>Odp: {item.letter}</Typography>
-                <Input
+                <TextField
+                  variant="filled"
+                  label={`Odp: ${item.letter}`}
+                  sx={{ ...textFieldSx }}
                   required={true}
                   onChange={(e) => handleInputChange(e)}
                   name={item.letter}
@@ -231,7 +274,7 @@ export function QuestionDialog(props: IQuestionDialogProps) {
                   control={
                     <Radio
                       sx={{
-                        color: "var(--color-dark)",
+                        color: "var(--color-white)",
                         "&.Mui-checked": {
                           color: "var(--color-success)",
                         },
@@ -254,7 +297,9 @@ export function QuestionDialog(props: IQuestionDialogProps) {
               onClick={addAnswer}
               variant="contained"
               sx={{
-                background: "var(--color-primary)",
+                width: "50%",
+                padding: "1rem",
+                background: "var(--color-blue)",
                 ":hover": { background: "var(--color-success)" },
               }}
             >

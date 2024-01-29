@@ -19,7 +19,7 @@ export interface ITestCardProps {
 }
 
 const buttonSizeSx: SxProps<Theme> = {
-  padding: "1rem 1.5rem",
+  padding: "0.5rem",
   fontSize: "1rem",
   fontWeight: "700",
 };
