@@ -13,7 +13,7 @@ function RegisterForm(props: {
       email: "",
       firstName: "",
       lastName: "",
-      role: "ADMIN",
+      role: "USER",
     }
   );
 

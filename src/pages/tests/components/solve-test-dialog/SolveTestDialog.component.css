@@ -1,0 +1,11 @@
+.solve-test__dialog__answer:hover {
+  background-color: var(--color-blue);
+  cursor: pointer;
+}
+
+.solve-test__dialog__answer--selected {
+  background-color: var(--color-darkBlue);
+  color: var(--color-white) !important;
+  opacity: 1 !important;
+  /* opacity: 0.7; */
+}

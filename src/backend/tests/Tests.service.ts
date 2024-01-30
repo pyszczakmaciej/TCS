@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import AppState from "../../store/App.state";
 import { QuestionPayload } from "./models/question-payload.interface";
+import { SolveTestPayload } from "./models/solve-test-payload.interface";
 
 const apiUrl = `${AppState.getValue("apiUrl")}/tests`;
 
@@ -47,6 +48,44 @@ const createTest = async (
 ): Promise<void | AxiosResponse<string, string>> => {
   return await axios
     .post(apiUrl, { name })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err: ErrorResponse) => {
+      alertError(err.response.data);
+    });
+};
+
+const fetchTestToSolve = async (testUuid: string) => {
+  return await axios
+    .get(`${apiUrl}/${testUuid}/questions/all`)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const fetchTestSummary = async (testUuid: string) => {
+  return await axios
+    .get(`${apiUrl}/${testUuid}/summary`)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const sentTestToCheck = async (
+  testUuid: string,
+  payload: SolveTestPayload
+): Promise<void | AxiosResponse<string, string>> => {
+  return await axios
+    .put(`${apiUrl}/${testUuid}/solve`, payload)
     .then((res) => {
       return res.data;
     })
@@ -120,7 +159,10 @@ const deleteQuestion = async (testUuid: string, questionUuid: string) => {
 const TestsService = {
   fetchTests,
   fetchTest,
+  fetchTestToSolve,
+  fetchTestSummary,
   createTest,
+  sentTestToCheck,
   activateTest,
   fetchQuestions,
   createQuestion,
