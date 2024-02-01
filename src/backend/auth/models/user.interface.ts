@@ -3,4 +3,5 @@ export interface User {
   sub: string;
   iat: number;
   exp: number;
+  role: "USER" | "ADMIN";
 }

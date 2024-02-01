@@ -1,6 +1,11 @@
-import { Button, List, TextField, useMediaQuery } from "@mui/material";
+import {
+  Button,
+  List,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import TestsService from "../../backend/tests/Tests.service";
 import { TestView } from "../../backend/tests/models/test-view.interface";
 import "./Tests.page.css";
@@ -32,7 +37,6 @@ export function TestsPage(props: ITestsPageProps) {
   const [testName, setTestName] = useState("");
   const [tests, setTests] = useState<TestView[]>([]);
 
-  const navigate = useNavigate();
   const matches = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
@@ -44,8 +48,8 @@ export function TestsPage(props: ITestsPageProps) {
 
   const createTest = async () => {
     if (!testName) return;
-    await TestsService.createTest(testName).then((res) => {
-      navigate(`${res}`);
+    await TestsService.createTest(testName).then(() => {
+      window.location.reload();
     });
   };
 
@@ -105,9 +109,18 @@ export function TestsPage(props: ITestsPageProps) {
             overflowY: "scroll",
           }}
         >
-          {tests.map((test, index) => {
-            return <TestCard key={index} test={test} />;
-          })}
+          {tests.length ? (
+            tests.map((test, index) => {
+              return <TestCard key={index} test={test} />;
+            })
+          ) : (
+            <Typography
+              variant="h4"
+              sx={{ width: "100%", padding: "1rem", textAlign: "center" }}
+            >
+              Brak testów
+            </Typography>
+          )}
         </List>
       </div>
     </div>

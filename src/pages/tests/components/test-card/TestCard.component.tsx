@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TestsService from "../../../../backend/tests/Tests.service";
 import { TestView } from "../../../../backend/tests/models/test-view.interface";
+import AppState from "../../../../store/App.state";
 import { SolvedTestSummaryDialog } from "../preview-solved-test-dialog/SolvedTestSummaryDialog.component";
 import { SolveTestDialog } from "../solve-test-dialog/SolveTestDialog.component";
 
@@ -22,8 +23,9 @@ export interface ITestCardProps {
 }
 
 const buttonSizeSx: SxProps<Theme> = {
+  minWidth: "fit-content",
   padding: "0.5rem",
-  fontSize: "1rem",
+  fontSize: "rem",
   fontWeight: "700",
 };
 
@@ -32,6 +34,7 @@ export function TestCard(props: ITestCardProps) {
   const [summaryDialogOpen, setSummaryDialogOpen] = useState(false);
 
   const { test } = props;
+  const user = AppState.getValue("user");
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width:1024px)");
 
@@ -39,20 +42,25 @@ export function TestCard(props: ITestCardProps) {
     TestsService.activateTest(testUuid);
   };
 
-  const closeSolveDialog = () => {
+  const closeSolveDialog = (reload: boolean) => {
+    if (reload) {
+      window.location.reload();
+    }
     setSolveDialogOpen(false);
   };
 
   const openSolveDialog = () => {
+    if (!test) return;
     setSolveDialogOpen(true);
+  };
+
+  const openSummaryDialog = () => {
+    if (!test) return;
+    setSummaryDialogOpen(true);
   };
 
   const closeSummaryDialog = () => {
     setSummaryDialogOpen(false);
-  };
-
-  const openSummaryDialog = () => {
-    setSummaryDialogOpen(true);
   };
 
   return (
@@ -84,83 +92,62 @@ export function TestCard(props: ITestCardProps) {
           sx={{
             paddingBottom: "1rem",
             display: "flex",
+            alignItems: "center",
             flexDirection: matches ? "row" : "column",
             gap: "1rem",
           }}
         >
-          <div style={{ display: "flex", gap: "1rem" }}>
-            <Button
-              onClick={() => openSolveDialog()}
-              sx={{
-                color: "var(--color-white)",
-                background: "var(--color-blue)",
-                ":hover": {
-                  color: "var(--color-white)",
-                  borderColor: "var(--color-blue)",
-                  background: "var(--color-blue)",
-                },
-                ":disabled": {
-                  color: "var(--color-primary)",
-                  background: "var(--color-secondary)",
-                  opacity: "0.4",
-                },
-                ...buttonSizeSx,
-              }}
-              variant="contained"
-            >
-              Rozwiąż
-            </Button>
-            <Button
-              onClick={() => openSummaryDialog()}
-              sx={{
-                color: "var(--color-white)",
-                background: "var(--color-blue)",
-                ":hover": {
-                  color: "var(--color-white)",
-                  borderColor: "var(--color-blue)",
-                  background: "var(--color-blue)",
-                },
-                ":disabled": {
-                  color: "var(--color-primary)",
-                  background: "var(--color-secondary)",
-                  opacity: "0.4",
-                },
-                ...buttonSizeSx,
-              }}
-              variant="contained"
-            >
-              Podgląd - TESTOWY
-            </Button>
-            {test.active ? (
-              <Tooltip title="Nie można edytować udostępnionego testu.">
-                <span>
-                  <Button
-                    sx={{
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            {test.active && test.solvedByLoggedUser ? (
+              <>
+                <Button
+                  onClick={() => openSolveDialog()}
+                  sx={{
+                    color: "var(--color-white)",
+                    background: "var(--color-blue)",
+                    ":hover": {
                       color: "var(--color-white)",
+                      borderColor: "var(--color-blue)",
                       background: "var(--color-blue)",
-                      ":hover": {
-                        color: "var(--color-white)",
-                        borderColor: "var(--color-blue)",
-                        background: "var(--color-blue)",
-                      },
-                      ":disabled": {
-                        color: "var(--color-primary)",
-                        background: "var(--color-secondary)",
-                        opacity: "0.4",
-                      },
-                      ...buttonSizeSx,
-                    }}
-                    variant="contained"
-                    disabled={test.active}
-                  >
-                    Edytuj
-                  </Button>
-                </span>
-              </Tooltip>
-            ) : (
+                    },
+                    ":disabled": {
+                      color: "var(--color-primary)",
+                      background: "var(--color-secondary)",
+                      opacity: "0.4",
+                    },
+                    ...buttonSizeSx,
+                  }}
+                  variant="contained"
+                >
+                  Popraw test
+                </Button>
+                <Button
+                  onClick={() => openSummaryDialog()}
+                  sx={{
+                    color: "var(--color-white)",
+                    background: "var(--color-blue)",
+                    ":hover": {
+                      color: "var(--color-white)",
+                      borderColor: "var(--color-blue)",
+                      background: "var(--color-blue)",
+                    },
+                    ":disabled": {
+                      color: "var(--color-primary)",
+                      background: "var(--color-secondary)",
+                      opacity: "0.4",
+                    },
+                    ...buttonSizeSx,
+                  }}
+                  variant="contained"
+                >
+                  Podgląd odpowiedzi
+                </Button>
+              </>
+            ) : null}
+
+            {test.active && !test.solvedByLoggedUser ? (
               <Button
-                hidden={test.active}
-                onClick={() => navigate(`${test.uuid}`)}
+                onClick={() => openSolveDialog()}
                 sx={{
                   color: "var(--color-white)",
                   background: "var(--color-blue)",
@@ -178,44 +165,85 @@ export function TestCard(props: ITestCardProps) {
                 }}
                 variant="contained"
               >
-                Edytuj
-              </Button>
-            )}
-            {!test.active ? (
-              <Button
-                onClick={() => activateTest(test.uuid)}
-                sx={{
-                  color: "var(--color-white)",
-                  background: "var(--color-success)",
-                  ":hover": {
-                    color: "var(--color-white)",
-                    borderColor: "var(--color-success)",
-                    background: "var(--color-success)",
-                  },
-                  ...buttonSizeSx,
-                }}
-                variant="contained"
-              >
-                Udostępnij
+                Rozwiąż test
               </Button>
             ) : null}
-            <Button
-              sx={{
-                color: "var(--color-white)",
-                borderColor: "var(--color-error)",
-                background: "var(--color-error)",
-                ":hover": {
-                  color: "var(--color-white)",
-                  background: "var(--color-error)",
-                },
-                ...buttonSizeSx,
-              }}
-              variant="contained"
-            >
-              Usuń
-            </Button>
-          </div>
 
+            {user?.role === "ADMIN" ? (
+              <div
+                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+              >
+                {test.active ? (
+                  <Tooltip title="Nie można edytować udostępnionego testu.">
+                    <span>
+                      <Button
+                        sx={{
+                          color: "var(--color-white)",
+                          background: "var(--color-blue)",
+                          ":hover": {
+                            color: "var(--color-white)",
+                            borderColor: "var(--color-blue)",
+                            background: "var(--color-blue)",
+                          },
+                          ":disabled": {
+                            color: "var(--color-primary)",
+                            background: "var(--color-secondary)",
+                            opacity: "0.4",
+                          },
+                          ...buttonSizeSx,
+                        }}
+                        variant="contained"
+                        disabled={test.active}
+                      >
+                        Edytuj
+                      </Button>
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <Button
+                    hidden={test.active}
+                    onClick={() => navigate(`${test.uuid}`)}
+                    sx={{
+                      color: "var(--color-white)",
+                      background: "var(--color-blue)",
+                      ":hover": {
+                        color: "var(--color-white)",
+                        borderColor: "var(--color-blue)",
+                        background: "var(--color-blue)",
+                      },
+                      ":disabled": {
+                        color: "var(--color-primary)",
+                        background: "var(--color-secondary)",
+                        opacity: "0.4",
+                      },
+                      ...buttonSizeSx,
+                    }}
+                    variant="contained"
+                  >
+                    Edytuj
+                  </Button>
+                )}
+                {!test.active ? (
+                  <Button
+                    onClick={() => activateTest(test.uuid)}
+                    sx={{
+                      color: "var(--color-white)",
+                      background: "var(--color-success)",
+                      ":hover": {
+                        color: "var(--color-white)",
+                        borderColor: "var(--color-success)",
+                        background: "var(--color-success)",
+                      },
+                      ...buttonSizeSx,
+                    }}
+                    variant="contained"
+                  >
+                    Udostępnij
+                  </Button>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
           <Typography
             sx={{
               width: "100%",
@@ -234,16 +262,20 @@ export function TestCard(props: ITestCardProps) {
           </Typography>
         </CardActions>
       </Card>
-      <SolveTestDialog
-        testUuid={test.uuid}
-        open={solveDialogOpen}
-        onClose={closeSolveDialog}
-      />
-      <SolvedTestSummaryDialog
-        testUuid={test.uuid}
-        open={summaryDialogOpen}
-        onClose={closeSummaryDialog}
-      />
+      {solveDialogOpen ? (
+        <SolveTestDialog
+          testUuid={test.uuid}
+          open={solveDialogOpen}
+          onClose={closeSolveDialog}
+        />
+      ) : null}
+      {summaryDialogOpen ? (
+        <SolvedTestSummaryDialog
+          testUuid={test.uuid}
+          open={summaryDialogOpen}
+          onClose={closeSummaryDialog}
+        />
+      ) : null}
     </>
   );
 }

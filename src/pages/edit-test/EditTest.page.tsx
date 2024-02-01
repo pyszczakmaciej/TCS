@@ -100,11 +100,13 @@ export function EditTestPage(props: IEditTestPageProps) {
           })}
         </List>
       </div>
-      <QuestionDialog
-        testUuid={params.testId || ""}
-        open={open}
-        onClose={(val) => handleClose(val)}
-      />
+      {open ? (
+        <QuestionDialog
+          testUuid={params.testId || ""}
+          open={open}
+          onClose={(val) => handleClose(val)}
+        />
+      ) : null}
     </div>
   );
 }

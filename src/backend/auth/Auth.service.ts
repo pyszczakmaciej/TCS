@@ -18,6 +18,32 @@ const getCurrentUser = (): User | null => {
   return jwtDecode(getToken() || "");
 };
 
+axios.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+    if (!token) return config;
+    const { exp } = jwtDecode(token);
+    if (!exp) return config;
+
+    const isTokenExpired = Date.now() >= exp * 1000;
+
+    console.log(isTokenExpired);
+
+    if (isTokenExpired) {
+      sessionStorage.removeItem("at");
+      AppState.setValue("token", null);
+      alert("Twoja sesja wygasła, zostaniesz wylogowany.");
+      window.location.reload();
+      return config;
+    }
+
+    config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 AppState.setValue("user", getCurrentUser());
 AppState.setValue("token", getToken());
 

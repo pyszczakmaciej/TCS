@@ -23,11 +23,10 @@ const fetchTests = async () => {
   return await axios
     .get(`${apiUrl}`)
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
-      console.log(err);
+      alertError(err);
     });
 };
 
@@ -35,11 +34,10 @@ const fetchTest = async (testUuid: string) => {
   return await axios
     .get(`${apiUrl}/${testUuid}`)
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
-      console.log(err);
+      alertError(err);
     });
 };
 
@@ -60,11 +58,10 @@ const fetchTestToSolve = async (testUuid: string) => {
   return await axios
     .get(`${apiUrl}/${testUuid}/questions/all`)
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
-      console.log(err);
+      alertError(err);
     });
 };
 
@@ -72,11 +69,10 @@ const fetchTestSummary = async (testUuid: string) => {
   return await axios
     .get(`${apiUrl}/${testUuid}/summary`)
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
-      console.log(err);
+      alertError(err);
     });
 };
 
@@ -119,12 +115,9 @@ const fetchQuestions = async (testUuid: string) => {
 const createQuestion = async (testUuid: string, data: QuestionPayload) => {
   return axios
     .post(`${apiUrl}/${testUuid}/questions`, data)
-    .then((res) => {
-      console.log(res);
-    })
+    .then((res) => res)
     .catch((err) => {
-      console.log(err);
-      return err;
+      alertError(err);
     });
 };
 
@@ -135,24 +128,18 @@ const updateQuestion = async (
 ) => {
   return axios
     .put(`${apiUrl}/${testUuid}/questions/${questionUuid}`, data)
-    .then((res) => {
-      console.log(res);
-    })
+    .then((res) => res)
     .catch((err) => {
-      console.log(err);
-      return err;
+      alertError(err);
     });
 };
 
 const deleteQuestion = async (testUuid: string, questionUuid: string) => {
   return axios
     .delete(`${apiUrl}/${testUuid}/questions/${questionUuid}`)
-    .then((res) => {
-      console.log(res);
-    })
+    .then((res) => res)
     .catch((err) => {
-      console.log(err);
-      return err;
+      alertError(err);
     });
 };
 

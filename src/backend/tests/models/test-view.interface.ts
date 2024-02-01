@@ -6,4 +6,5 @@ export interface TestView {
   active: boolean;
   createdAt: string;
   author: Author;
+  solvedByLoggedUser: boolean;
 }

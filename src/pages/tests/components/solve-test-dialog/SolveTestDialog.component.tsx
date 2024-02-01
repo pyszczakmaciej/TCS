@@ -43,7 +43,7 @@ export function SolveTestDialog(props: ISolveTestDialogProps) {
   const [testToSolve, setTestToSolve] = useState<TestToSolve | null>(null);
 
   useEffect(() => {
-    if (testToSolve) return;
+    if (testToSolve || !testUuid) return;
 
     TestsService.fetchTestToSolve(testUuid).then((res) => {
       const initialPayloadArray: SolveTestAnswer[] = res.questions.map(
@@ -74,8 +74,6 @@ export function SolveTestDialog(props: ISolveTestDialogProps) {
         return item;
       }),
     });
-
-    console.log(questionUuid, selectedAnswer);
   };
 
   const checkIfSelected = (
@@ -92,25 +90,24 @@ export function SolveTestDialog(props: ISolveTestDialogProps) {
 
   const handleClose = (reload: boolean) => {
     onClose(reload);
-    resetState();
-  };
-
-  const resetState = () => {
-    setPayload({ answers: [] });
-    setSelectedAnswersNum(0);
-    setTestToSolve(null);
   };
 
   const sentToCheck = async () => {
     if (!testToSolve) return;
     await TestsService.sentTestToCheck(testToSolve.uuid, payload).then(() => {
-      handleClose(false);
+      handleClose(true);
     });
   };
 
   return (
     <React.Fragment>
-      <Dialog scroll="body" fullScreen open={open} onClose={handleClose}>
+      <Dialog
+        scroll="body"
+        sx={{ height: "100%" }}
+        fullScreen
+        open={open}
+        onClose={handleClose}
+      >
         <AppBar
           sx={{
             position: "relative",
@@ -138,7 +135,7 @@ export function SolveTestDialog(props: ISolveTestDialogProps) {
           </Toolbar>
         </AppBar>
 
-        <DialogContent sx={{ background: "var(--color-dark)" }}>
+        <DialogContent sx={{ background: "var(--color-dark)", height: "100%" }}>
           {testToSolve?.questions.map((question, index) => {
             return (
               <List
@@ -148,7 +145,6 @@ export function SolveTestDialog(props: ISolveTestDialogProps) {
                   flexDirection: "column",
                   overflowY: "scroll",
                   width: "100%",
-                  height: "100%",
                   alignItems: "center",
                 }}
               >
