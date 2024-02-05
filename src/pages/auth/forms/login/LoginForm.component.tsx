@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
+import logo from "../../../../assets/images/logo.png";
 import AuthService from "../../../../backend/auth/Auth.service";
 import { LoginPayload } from "../../../../backend/auth/models/login-payload.interface";
 import Input from "../../../../components/Input/Input.component";
-
 function LoginForm(props: {
   setIsLoginView: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -17,12 +17,10 @@ function LoginForm(props: {
       ...loginFormValues,
       [e.target.name]: e.target.value,
     });
-    console.log(loginFormValues);
   };
 
   const login = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(loginFormValues);
     AuthService.login(loginFormValues).then(() => {
       window.location.reload();
     });
@@ -30,7 +28,8 @@ function LoginForm(props: {
 
   return (
     <form className="form" onSubmit={(e) => login(e)}>
-      <h1>Test Craft Studio</h1>
+      <img src={logo} style={{ width: "200px", height: "200px" }} />
+
       <h3>Logowanie</h3>
       <div className="inputs">
         <Input

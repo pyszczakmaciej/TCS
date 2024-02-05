@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
+import logo from "../../../../assets/images/logo.png";
 import AuthService from "../../../../backend/auth/Auth.service";
 import { RegisterPayload } from "../../../../backend/auth/models/register-payload.interface";
 import Input from "../../../../components/Input/Input.component";
@@ -27,14 +28,14 @@ function RegisterForm(props: {
 
   const register = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    AuthService.register(registerFormValues).then((res) => {
+    AuthService.register(registerFormValues).then(() => {
       window.location.reload();
     });
   };
 
   return (
     <form className="form" onSubmit={(e) => register(e)}>
-      <h1>Test Craft Studio</h1>
+      <img src={logo} style={{ width: "200px", height: "200px" }} />
       <h3>Rejestracja</h3>
       <div className="inputs">
         <Input

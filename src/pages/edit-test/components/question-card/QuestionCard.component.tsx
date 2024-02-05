@@ -30,8 +30,7 @@ export function QuestionCard(props: IQuestionCardProps) {
 
   const deleteQuestion = () => {
     if (!params.testId) return;
-    TestsService.deleteQuestion(params.testId, question.uuid).then((res) => {
-      console.log(res);
+    TestsService.deleteQuestion(params.testId, question.uuid).then(() => {
       window.location.reload();
     });
   };

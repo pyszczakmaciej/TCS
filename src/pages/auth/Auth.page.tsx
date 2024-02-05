@@ -5,7 +5,6 @@ import AppState from "../../store/App.state";
 import "./Auth.page.css";
 import LoginForm from "./forms/login/LoginForm.component";
 import RegisterForm from "./forms/register/RegisterForm.component";
-
 function AuthPage() {
   const [isLoginView, setIsLoginView] = useState<boolean>(true);
   const navigate = useNavigate();
