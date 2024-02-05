@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useState } from "react";
 import AuthService from "../../../../backend/auth/Auth.service";
 import { RegisterPayload } from "../../../../backend/auth/models/register-payload.interface";
@@ -22,14 +23,11 @@ function RegisterForm(props: {
       ...registerFormValues,
       [e.target.name]: e.target.value,
     });
-    console.log(registerFormValues);
   };
 
   const register = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(registerFormValues);
     AuthService.register(registerFormValues).then((res) => {
-      console.log(res);
       window.location.reload();
     });
   };
@@ -75,9 +73,9 @@ function RegisterForm(props: {
           required
         />
       </div>
-      <button className="button" type="submit">
+      <Button variant="contained" type="submit">
         Załóż konto
-      </button>
+      </Button>
       <span onClick={() => props.setIsLoginView(true)}>Wróć do logowania</span>
     </form>
   );
